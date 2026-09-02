@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/aderson-rosa/qa.automationexercise-web.webdriverio/actions/workflows/ci.yml/badge.svg)
 
+📊 **[Relatório Allure da última execução](https://aderson-rosa.github.io/qa.automationexercise-web.webdriverio/)** (publicado automaticamente pela pipeline)
+
 Testes E2E da aplicação **[Automation Exercise](https://automationexercise.com/)** com **[WebdriverIO](https://webdriver.io/)** (Mocha + TypeScript, sem Gherkin), **Page Object Model** e relatório **Allure**.
 
 ## ✅ Escopo automatizado
@@ -72,4 +74,4 @@ Decisões que sustentam o crescimento do projeto sem duplicação:
 
 ## 🚀 Pipeline
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push/PR: executa a suíte headless no Ubuntu, gera o relatório Allure e o publica como artefato da execução.
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push/PR: verifica os tipos, executa a suíte headless no Ubuntu e gera o relatório **Allure**, publicado de duas formas: como **artefato** da execução e, nas execuções da `main`, no **GitHub Pages**, em uma URL fixa que sempre reflete a última execução.
