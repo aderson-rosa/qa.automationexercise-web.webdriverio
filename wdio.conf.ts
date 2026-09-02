@@ -42,6 +42,14 @@ export const config: WebdriverIO.Config = {
   connectionRetryTimeout: 120000,
   connectionRetryCount: 2,
 
+  // Alinha o timeout das asserções (expect-webdriverio) ao waitforTimeout.
+  // O padrão do matcher é 2s e não herda o waitforTimeout, o que causa
+  // falhas por timing em runners de CI mais lentos que a máquina local.
+  expectOpts: {
+    wait: 15000,
+    interval: 300,
+  },
+
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',

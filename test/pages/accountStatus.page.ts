@@ -17,6 +17,16 @@ class AccountStatusPage extends Page {
     return $('[data-qa="continue-button"]');
   }
 
+  /** Aguarda a confirmação de conta criada ficar visível após o envio do formulário. */
+  async aguardarContaCriada(): Promise<void> {
+    await this.tituloContaCriada.waitForDisplayed();
+  }
+
+  /** Aguarda a confirmação de conta excluída ficar visível após a exclusão. */
+  async aguardarContaExcluida(): Promise<void> {
+    await this.tituloContaExcluida.waitForDisplayed();
+  }
+
   /** Prossegue a navegação a partir da tela de confirmação. */
   async continuar(): Promise<void> {
     await this.botaoContinue.click();

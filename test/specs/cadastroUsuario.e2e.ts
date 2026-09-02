@@ -24,17 +24,19 @@ describe('Cadastro de usuário', () => {
     await accountInfoPage.criarConta();
 
     // Assert: conta criada com sucesso
+    await accountStatusPage.aguardarContaCriada();
     await expect(accountStatusPage.tituloContaCriada).toHaveText('ACCOUNT CREATED!');
 
     // Act: continuar e validar a sessão autenticada no cabeçalho
     await accountStatusPage.continuar();
+    await header.aguardarSessaoAutenticada();
     await expect(header.mensagemLogadoComo).toHaveText(`Logged in as ${usuario.nome}`);
 
     // Act: excluir a conta recém-criada
     await header.excluirConta();
 
     // Assert: exclusão confirmada e botão Continue disponível
-    await expect(accountStatusPage.tituloContaExcluida).toBeDisplayed();
+    await accountStatusPage.aguardarContaExcluida();
     await expect(accountStatusPage.tituloContaExcluida).toHaveText('ACCOUNT DELETED!');
     await expect(accountStatusPage.botaoContinue).toBeDisplayed();
   });
