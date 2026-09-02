@@ -1,3 +1,5 @@
+import { TIMEOUT_NAVEGACAO } from '../support/timeouts';
+
 /**
  * Comportamento comum a todas as páginas (classe base do Page Object Model).
  */
@@ -19,7 +21,7 @@ export default class Page {
     await browser.url(path);
     await this.aguardarVerificacaoAntiBot();
     await this.fecharConsentimentoSePresente();
-    await this.menuPrincipal.waitForDisplayed();
+    await this.menuPrincipal.waitForDisplayed({ timeout: TIMEOUT_NAVEGACAO });
   }
 
   /**
@@ -41,7 +43,7 @@ export default class Page {
         return !/being verified/i.test(conteudo) && (await this.menuPrincipal.isExisting());
       },
       {
-        timeout: 90000,
+        timeout: TIMEOUT_NAVEGACAO,
         interval: 1000,
         timeoutMsg:
           'A aplicação não liberou o acesso após a verificação anti-bot (tela "request is being verified").',

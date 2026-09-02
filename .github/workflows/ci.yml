@@ -19,6 +19,9 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
+      - name: Verificar tipos
+        run: npm run typecheck
+
       - name: Executar testes E2E (headless)
         run: npm test
 

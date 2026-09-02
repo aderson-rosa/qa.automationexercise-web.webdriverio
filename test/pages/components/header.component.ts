@@ -1,3 +1,5 @@
+import { TIMEOUT_NAVEGACAO } from '../../support/timeouts';
+
 /**
  * Cabeçalho exibido em todas as páginas após o login.
  * Componente separado das páginas porque é compartilhado por todas elas.
@@ -20,7 +22,7 @@ class HeaderComponent {
    * elemento inexistente, especialmente em ambientes de CI mais lentos.
    */
   async aguardarSessaoAutenticada(): Promise<void> {
-    await this.mensagemLogadoComo.waitForDisplayed();
+    await this.mensagemLogadoComo.waitForDisplayed({ timeout: TIMEOUT_NAVEGACAO });
   }
 
   /** Aciona a exclusão da conta do usuário autenticado. */
