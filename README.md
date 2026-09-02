@@ -40,7 +40,7 @@ Cada execução grava os resultados em `allure-results/`. Para gerar e abrir o r
 npm run report:allure
 ```
 
-Em caso de falha, o relatório recebe automaticamente um screenshot e o contexto da página (URL e cabeçalho) no momento do erro. Cada execução também registra o ambiente (URL base, navegador, modo headless e se rodou local ou no CI), e o caso de teste é classificado por funcionalidade e criticidade. Na pipeline, o relatório HTML é gerado e publicado como artefato de cada execução.
+O relatório traz **evidências em todas as execuções, não apenas nas que falham**: o fluxo é capturado nos marcos de negócio (tela de signup, formulário preenchido, conta criada, usuário autenticado e conta excluída), o que comprova o caminho percorrido para quem audita o resultado sem rodar a suíte. Em caso de falha, além do screenshot do momento do erro, é anexado o contexto da página (URL e cabeçalho). Cada execução também registra o ambiente (URL base, navegador, modo headless e se rodou local ou no CI), e o caso de teste é classificado por funcionalidade e criticidade. Na pipeline, o relatório HTML é gerado e publicado como artefato de cada execução.
 
 ## 🗂️ Estrutura e padrões
 
