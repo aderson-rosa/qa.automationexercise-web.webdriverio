@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import allureReporter from '@wdio/allure-reporter';
+import { anexarEvidencia } from './test/support/evidencias';
 
 /**
  * Configuração do WebdriverIO.
@@ -75,7 +76,9 @@ export const config: WebdriverIO.Config = {
       {
         outputDir: 'allure-results',
         disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: false,
+        // As capturas são anexadas explicitamente, com nomes que descrevem a
+        // etapa do fluxo; o anexo automático geraria duplicidade sem contexto.
+        disableWebdriverScreenshotsReporting: true,
       },
     ],
   ],
@@ -98,16 +101,16 @@ export const config: WebdriverIO.Config = {
   },
 
   /**
-   * Em caso de falha, anexa ao relatório Allure um screenshot e o contexto da
-   * página (URL e conteúdo do cabeçalho). Esse contexto é o que permite
+   * Fecha o teste anexando ao Allure o estado final da página. Em caso de
+   * falha, acrescenta o contexto (URL e cabeçalho), que é o que permite
    * diferenciar uma falha da aplicação de um bloqueio do ambiente de execução.
    */
   afterTest: async function (_test, _context, { passed }) {
+    await anexarEvidencia(passed ? 'Estado final (teste aprovado)' : 'Estado no momento da falha');
+
     if (passed) {
       return;
     }
-
-    await browser.takeScreenshot();
 
     const url = await browser.getUrl().catch(() => 'indisponível');
     const cabecalho = await $('#header')
