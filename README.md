@@ -64,6 +64,8 @@ Decisões que sustentam o crescimento do projeto sem duplicação:
 - **Factory de dados:** e-mail único por execução (timestamp + aleatório) permite reexecuções ilimitadas sem colisão de contas.
 - **Triple A:** o teste segue Arrange / Act / Assert com marcação explícita das fases.
 - **Resiliência:** o diálogo de consentimento de anúncios (exibido em algumas regiões) é tratado na classe base, sem poluir os testes.
+- **Estabilidade sem retry:** cada transição de página é sincronizada por uma espera explícita nos Page Objects (`aguardarContaCriada`, `aguardarSessaoAutenticada`, `aguardarContaExcluida`). Sem isso, a asserção seguinte é avaliada durante a navegação e falha por elemento inexistente — falha que não aparece em máquina rápida e surge no CI. A opção foi corrigir a sincronização na origem, e não mascarar com `retry`, que esconderia o problema real.
+- **Versão do navegador:** `browserVersion: 'stable'` faz o WebdriverIO gerenciar o Chrome for Testing, garantindo navegador e driver na mesma versão no local e no CI (evita o erro clássico de incompatibilidade entre ChromeDriver e Chrome instalado).
 
 ## 🚀 Pipeline
 
