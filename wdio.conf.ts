@@ -1,3 +1,5 @@
+import allureReporter from '@wdio/allure-reporter';
+
 /**
  * Configuração do WebdriverIO.
  * Execução headless por padrão (local e CI); para acompanhar o navegador
@@ -5,12 +7,28 @@
  */
 const headless = process.env.HEADLESS !== 'false';
 
+// Redireciona os domínios de anúncios/pesquisas para um endereço inválido.
+// A aplicação carrega anúncios do Google que, em alguns ambientes, abrem um
+// modal sobre a página ("Answer questions to support great content") e
+// interceptam cliques. Bloquear no nível da rede mantém o teste focado na
+// aplicação, sem depender de fechar overlays de terceiros.
+const dominiosDeAnuncios = [
+  '*.googlesyndication.com',
+  '*.doubleclick.net',
+  '*.googletagservices.com',
+  '*.google-analytics.com',
+  '*.adtrafficquality.google',
+  '*.fundingchoicesmessages.google.com',
+  'surveys.google.com',
+];
+
 const chromeArgs = [
   '--disable-gpu',
   '--no-sandbox',
   '--disable-dev-shm-usage',
   '--disable-notifications',
   '--window-size=1366,900',
+  `--host-resolver-rules=${dominiosDeAnuncios.map((d) => `MAP ${d} 127.0.0.1`).join(',')}`,
 ];
 if (headless) {
   chromeArgs.push('--headless=new');
@@ -61,12 +79,27 @@ export const config: WebdriverIO.Config = {
   ],
 
   /**
-   * Anexa um screenshot ao relatório Allure sempre que um teste falha,
-   * facilitando a análise da falha direto no relatório.
+   * Em caso de falha, anexa ao relatório Allure um screenshot e o contexto da
+   * página (URL e conteúdo do cabeçalho). Esse contexto é o que permite
+   * diferenciar uma falha da aplicação de um bloqueio do ambiente de execução.
    */
   afterTest: async function (_test, _context, { passed }) {
-    if (!passed) {
-      await browser.takeScreenshot();
+    if (passed) {
+      return;
     }
+
+    await browser.takeScreenshot();
+
+    const url = await browser.getUrl().catch(() => 'indisponível');
+    const cabecalho = await $('#header')
+      .getText()
+      .then((texto) => texto.replace(/\s+/g, ' '))
+      .catch(() => 'indisponível');
+
+    allureReporter.addAttachment(
+      'Contexto da falha',
+      `URL: ${url}\nCabeçalho: ${cabecalho}`,
+      'text/plain',
+    );
   },
 };
