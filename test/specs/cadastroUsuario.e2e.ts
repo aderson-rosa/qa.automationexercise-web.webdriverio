@@ -1,4 +1,5 @@
 import { expect } from '@wdio/globals';
+import allureReporter from '@wdio/allure-reporter';
 import homePage from '../pages/home.page';
 import authPage from '../pages/auth.page';
 import accountInfoPage from '../pages/accountInfo.page';
@@ -8,6 +9,11 @@ import { buildUsuario } from '../data/usuario.factory';
 
 describe('Cadastro de usuário', () => {
   it('deve registrar um novo usuário e excluir a conta com sucesso', async () => {
+    // Classificação do caso no relatório Allure (funcionalidade e criticidade).
+    allureReporter.addFeature('Cadastro de usuário');
+    allureReporter.addStory('Test Case 1: registrar um usuário');
+    allureReporter.addSeverity('critical');
+
     // Arrange: massa de dados única para esta execução
     const usuario = buildUsuario();
 

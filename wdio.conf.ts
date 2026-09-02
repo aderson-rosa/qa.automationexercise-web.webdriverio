@@ -1,3 +1,5 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import allureReporter from '@wdio/allure-reporter';
 
 /**
@@ -77,6 +79,23 @@ export const config: WebdriverIO.Config = {
       },
     ],
   ],
+
+  /**
+   * Registra no relatório Allure o ambiente da execução (aplicação, navegador
+   * e se rodou headless), para que um relatório isolado seja interpretável.
+   */
+  onPrepare: function (config) {
+    const propriedades = [
+      `URL_base=${config.baseUrl}`,
+      'Navegador=Chrome (Chrome for Testing, canal stable)',
+      `Headless=${headless ? 'sim' : 'nao'}`,
+      `Executado_em=${process.env.CI ? 'GitHub Actions' : 'local'}`,
+    ].join('\n');
+
+    const diretorio = join(process.cwd(), 'allure-results');
+    mkdirSync(diretorio, { recursive: true });
+    writeFileSync(join(diretorio, 'environment.properties'), propriedades, 'utf8');
+  },
 
   /**
    * Em caso de falha, anexa ao relatório Allure um screenshot e o contexto da

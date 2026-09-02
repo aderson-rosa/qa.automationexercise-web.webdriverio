@@ -12,7 +12,7 @@ Testes E2E da aplicação **[Automation Exercise](https://automationexercise.com
 
 - **Node.js 20+** (LTS) e **npm**
 - **Google Chrome** instalado (o WebdriverIO gerencia o driver automaticamente)
-- **Java 11+** apenas para abrir o relatório Allure localmente (`allure-commandline`)
+- **Java 8+** apenas para gerar/abrir o relatório Allure localmente (o Allure CLI roda sobre a JVM)
 
 ## ▶️ Instalação e execução
 
@@ -38,7 +38,7 @@ Cada execução grava os resultados em `allure-results/`. Para gerar e abrir o r
 npm run report:allure
 ```
 
-Em caso de falha, um screenshot do momento do erro é anexado automaticamente ao relatório. Na pipeline, o relatório HTML é gerado e publicado como artefato de cada execução.
+Em caso de falha, o relatório recebe automaticamente um screenshot e o contexto da página (URL e cabeçalho) no momento do erro. Cada execução também registra o ambiente (URL base, navegador, modo headless e se rodou local ou no CI), e o caso de teste é classificado por funcionalidade e criticidade. Na pipeline, o relatório HTML é gerado e publicado como artefato de cada execução.
 
 ## 🗂️ Estrutura e padrões
 
