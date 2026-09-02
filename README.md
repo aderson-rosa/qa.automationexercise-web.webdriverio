@@ -66,6 +66,7 @@ Decisões que sustentam o crescimento do projeto sem duplicação:
 - **Resiliência:** o diálogo de consentimento de anúncios (exibido em algumas regiões) é tratado na classe base, sem poluir os testes.
 - **Estabilidade sem retry:** cada transição de página é sincronizada por uma espera explícita nos Page Objects (`aguardarContaCriada`, `aguardarSessaoAutenticada`, `aguardarContaExcluida`). Sem isso, a asserção seguinte é avaliada durante a navegação e falha por elemento inexistente — falha que não aparece em máquina rápida e surge no CI. A opção foi corrigir a sincronização na origem, e não mascarar com `retry`, que esconderia o problema real.
 - **Versão do navegador:** `browserVersion: 'stable'` faz o WebdriverIO gerenciar o Chrome for Testing, garantindo navegador e driver na mesma versão no local e no CI (evita o erro clássico de incompatibilidade entre ChromeDriver e Chrome instalado).
+- **Verificação anti-bot da aplicação:** ao executar a partir de IPs de datacenter (caso dos runners do GitHub Actions), a aplicação exibe uma tela intersticial "Please wait while your request is being verified...". O diagnóstico veio do próprio relatório da pipeline: o screenshot anexado no Allure mostrou essa tela em vez da home. A classe base aguarda a liberação antes de qualquer interação, em vez de mascarar a instabilidade com retry.
 
 ## 🚀 Pipeline
 
